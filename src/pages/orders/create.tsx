@@ -1,12 +1,12 @@
-// src/pages/orders/edit.tsx
-import { Edit, useForm } from "@refinedev/antd";
+// src/pages/orders/create.tsx
+import { Create, useForm } from "@refinedev/antd";
 import { Form, Input, InputNumber, Select } from "antd";
 
-export const OrdersEdit = () => {
+export const OrdersCreate = () => {
   const { formProps, saveButtonProps } = useForm();
 
   return (
-    <Edit saveButtonProps={saveButtonProps}>
+    <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item label="Customer Name" name={["customer", "name"]} rules={[{ required: true }]}>
           <Input />
@@ -32,6 +32,6 @@ export const OrdersEdit = () => {
           />
         </Form.Item>
       </Form>
-    </Edit>
+    </Create>
   );
 };
