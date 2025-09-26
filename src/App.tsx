@@ -16,6 +16,7 @@ import {CategoryCreate,CategoryEdit,CategoryList,CategoryShow} from "./pages/cat
 import {ProductsCreate,ProductsEdit,ProductsList,ProductsShow,} from "./pages/products";
 import { OrdersCreate, OrdersEdit, OrdersList, OrdersShow } from "./pages/orders";  
 import { UsersCreate, UsersEdit, UsersList, UsersShow } from "./pages/users";
+import { StatusCreate, StatusEdit, StatusList, StatusShow } from "./pages/statuses";
 import { Dashboard } from "./pages/dashboard";
 
 
@@ -42,6 +43,16 @@ function App() {
                     create: "/categories/create",
                     edit: "/categories/edit/:id",
                     show: "/categories/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
+                  },
+                  {
+                    name: "statuses",
+                    list: "/statuses",
+                    create: "/statuses/create",
+                    edit: "/statuses/edit/:id",
+                    show: "/statuses/show/:id",
                     meta: {
                       canDelete: true,
                     },
@@ -108,6 +119,12 @@ function App() {
                       <Route path="edit/:id" element={<CategoryEdit />} />
                       <Route path="show/:id" element={<CategoryShow />} />
                     </Route>
+                    <Route path="/statuses">
+                      <Route index element={<StatusList />} />
+                      <Route path="create" element={<StatusCreate />} />
+                      <Route path="edit/:id" element={<StatusEdit />} />
+                      <Route path="show/:id" element={<StatusShow />} />
+                    </Route>
                     <Route path="/products">
                       <Route index element={<ProductsList />} />
                       <Route path="create" element={<ProductsCreate />} />
@@ -166,7 +183,7 @@ function App() {
                 <RefineKbar />
                 <UnsavedChangesNotifier />
                 <DocumentTitleHandler />
-                DashboardPage={<Dashboard />}
+                /*DashboardPage={<Dashboard />}*/
               </Refine>
               <DevtoolsPanel />
             </DevtoolsProvider>

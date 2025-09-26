@@ -12,6 +12,14 @@ export const OrdersCreate = () => {
           <Input />
         </Form.Item>
 
+        <Form.Item label="Customer Phone" name={["customer", "phone"]} rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="Products" name={["customer", "products"]} rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+
         <Form.Item label="Customer Email" name={["customer", "email"]} rules={[{ required: true }]}>
           <Input />
         </Form.Item>
