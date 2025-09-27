@@ -183,7 +183,7 @@ function App() {
                 <RefineKbar />
                 <UnsavedChangesNotifier />
                 <DocumentTitleHandler />
-                /*DashboardPage={<Dashboard />}*/
+                DashboardPage={<Dashboard />}
               </Refine>
               <DevtoolsPanel />
             </DevtoolsProvider>

@@ -1,7 +1,4 @@
-import {
-  Create,
-  useForm,
-} from "@refinedev/antd";
+import { Create, useForm } from "@refinedev/antd";
 import {
   Form,
   Input,
@@ -9,112 +6,334 @@ import {
   Button,
   Space,
   Divider,
+  Upload,
+  Select,
 } from "antd";
-import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  UploadOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
+import { useState } from "react";
+import { categories } from "../../utility/categories";
+
 
 export const ProductsCreate = () => {
   const { formProps, saveButtonProps } = useForm();
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   return (
     <Create saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
-        {/* Product Basic Info */}
+        {/* Required Fields */}
         <Form.Item
           label="Product Name"
           name="name"
-          rules={[{ required: true, message: "Please enter product name" }]}
+          rules={[{ required: true }]}
         >
-          <Input placeholder="E.g. T-Shirt" />
+          <Input placeholder="e.g. iPhone 16 Pro" />
         </Form.Item>
 
         <Form.Item
-          label="Price"
+          label="Basic Price"
           name="price"
-          rules={[{ required: true, message: "Please enter price" }]}
+          rules={[{ required: true }]}
         >
           <InputNumber min={0} style={{ width: "100%" }} />
         </Form.Item>
 
-        <Form.Item label="Stock" name="stock" initialValue={0}>
-          <InputNumber min={0} style={{ width: "100%" }} />
+        {/* General Images */}
+        <Form.Item
+          label="General Images"
+          name="images"
+          valuePropName="fileList"
+          getValueFromEvent={(e) => e.fileList}
+        >
+          <Upload.Dragger name="file" listType="picture" multiple>
+            <UploadOutlined /> Click or drag to upload product images
+          </Upload.Dragger>
+        </Form.Item>
+
+        {/* Category & Type */}
+        <Form.Item
+          label="Category"
+          name="category"
+          rules={[{ required: true }]}
+        >
+          <Select
+            placeholder="Select category"
+            options={Object.keys(categories).map((c) => ({
+              label: c,
+              value: c,
+            }))}
+            onChange={(value) => setSelectedCategory(value)}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Type"
+          name="type"
+          rules={[{ required: true }]}
+        >
+          <Select
+            placeholder="Select type"
+            disabled={!selectedCategory}
+            options={categories[selectedCategory]?.map((t) => ({
+              label: t,
+              value: t,
+            }))}
+          />
         </Form.Item>
 
         <Divider />
 
-        {/* Product Variants */}
-        <h3>Variants</h3>
-        <Form.List name="variants">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map(({ key, name, ...restField }) => (
-                <Space key={key} align="baseline" style={{ display: "flex", marginBottom: 8 }}>
-                  <Form.Item
-                    {...restField}
-                    name={[name, "color"]}
-                    rules={[{ required: true, message: "Enter color" }]}
-                  >
-                    <Input placeholder="Color (e.g. Red)" />
-                  </Form.Item>
-                  <Form.Item
-                    {...restField}
-                    name={[name, "size"]}
-                    rules={[{ required: true, message: "Enter size" }]}
-                  >
-                    <Input placeholder="Size (e.g. M)" />
-                  </Form.Item>
-                  <Form.Item
-                    {...restField}
-                    name={[name, "stock"]}
-                    rules={[{ required: true, message: "Enter stock" }]}
-                  >
-                    <InputNumber min={0} placeholder="Stock" />
-                  </Form.Item>
-                  <MinusCircleOutlined onClick={() => remove(name)} />
-                </Space>
-              ))}
-              <Form.Item>
-                <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
-                  Add Variant
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
+        {/* Electronics */}
+        {selectedCategory === "electronics" && (
+          <>
+            {/* Colors with images */}
+            <Form.Item label="Colors">
+              <Form.List name="colors">
+                {(fields, { add, remove }) => (
+                  <>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      Add Color
+                    </Button>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <Space
+                        key={key}
+                        style={{ display: "flex", marginTop: 16 }}
+                        align="baseline"
+                      >
+                        <Form.Item
+                          {...restField}
+                          name={[name, "name"]}
+                          rules={[{ required: true }]}
+                        >
+                          <Input placeholder="Color name" />
+                        </Form.Item>
+                        <Form.Item
+                          {...restField}
+                          name={[name, "image"]}
+                          valuePropName="fileList"
+                          getValueFromEvent={(e) => e.fileList}
+                        >
+                          <Upload listType="picture" maxCount={1}>
+                            <Button icon={<UploadOutlined />}>Upload</Button>
+                          </Upload>
+                        </Form.Item>
+                        <DeleteOutlined
+                          onClick={() => remove(name)}
+                          style={{ color: "red", cursor: "pointer" }}
+                        />
+                      </Space>
+                    ))}
+                  </>
+                )}
+              </Form.List>
+            </Form.Item>
 
-        <Divider />
+            {/* RAM */}
+            <Form.Item label="RAM Options" name="ram">
+              <Select mode="tags" placeholder="e.g. 4GB, 8GB, 16GB" />
+            </Form.Item>
 
-        {/* Product Options */}
-        <h3>Options</h3>
-        <Form.List name="options">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map(({ key, name, ...restField }) => (
-                <Space key={key} align="baseline" style={{ display: "flex", marginBottom: 8 }}>
-                  <Form.Item
-                    {...restField}
-                    name={[name, "name"]}
-                    rules={[{ required: true, message: "Enter option name" }]}
+            {/* Memory with price */}
+            <Form.Item label="Memory Options">
+              <Form.List name="memory">
+                {(fields, { add, remove }) => (
+                  <>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      Add Memory Option
+                    </Button>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <Space
+                        key={key}
+                        style={{ display: "flex", marginTop: 16 }}
+                        align="baseline"
+                      >
+                        <Form.Item
+                          {...restField}
+                          name={[name, "size"]}
+                          rules={[{ required: true }]}
+                        >
+                          <Input placeholder="e.g. 128GB" />
+                        </Form.Item>
+                        <Form.Item
+                          {...restField}
+                          name={[name, "price"]}
+                          rules={[{ required: true }]}
+                        >
+                          <InputNumber min={0} placeholder="Price" />
+                        </Form.Item>
+                        <DeleteOutlined
+                          onClick={() => remove(name)}
+                          style={{ color: "red", cursor: "pointer" }}
+                        />
+                      </Space>
+                    ))}
+                  </>
+                )}
+              </Form.List>
+            </Form.Item>
+
+            {/* OS */}
+            <Form.Item label="Operating Systems" name="os">
+              <Select mode="tags" placeholder="e.g. Android, iOS, Windows" />
+            </Form.Item>
+          </>
+        )}
+
+        {/* Clothes */}
+        {selectedCategory === "clothes" && (
+          <>
+            {/* Colors with images */}
+            <Form.Item label="Colors">
+              <Form.List name="colors">
+                {(fields, { add, remove }) => (
+                  <>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      Add Color
+                    </Button>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <Space
+                        key={key}
+                        style={{ display: "flex", marginTop: 16 }}
+                        align="baseline"
+                      >
+                        <Form.Item
+                          {...restField}
+                          name={[name, "name"]}
+                          rules={[{ required: true }]}
+                        >
+                          <Input placeholder="Color name" />
+                        </Form.Item>
+                        <Form.Item
+                          {...restField}
+                          name={[name, "image"]}
+                          valuePropName="fileList"
+                          getValueFromEvent={(e) => e.fileList}
+                        >
+                          <Upload listType="picture" maxCount={1}>
+                            <Button icon={<UploadOutlined />}>Upload</Button>
+                          </Upload>
+                        </Form.Item>
+                        <DeleteOutlined
+                          onClick={() => remove(name)}
+                          style={{ color: "red", cursor: "pointer" }}
+                        />
+                      </Space>
+                    ))}
+                  </>
+                )}
+              </Form.List>
+            </Form.Item>
+
+            {/* Sizes with price */}
+            <Form.Item label="Sizes">
+              <Form.List name="sizes">
+                {(fields, { add, remove }) => (
+                  <>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      Add Size
+                    </Button>
+                    {fields.map(({ key, name, ...restField }) => (
+                      <Space
+                        key={key}
+                        style={{ display: "flex", marginTop: 16 }}
+                        align="baseline"
+                      >
+                        <Form.Item
+                          {...restField}
+                          name={[name, "label"]}
+                          rules={[{ required: true }]}
+                        >
+                          <Input placeholder="Size (e.g. M, L, XL)" />
+                        </Form.Item>
+                        <Form.Item
+                          {...restField}
+                          name={[name, "price"]}
+                          rules={[{ required: true }]}
+                        >
+                          <InputNumber min={0} placeholder="Price" />
+                        </Form.Item>
+                        <DeleteOutlined
+                          onClick={() => remove(name)}
+                          style={{ color: "red", cursor: "pointer" }}
+                        />
+                      </Space>
+                    ))}
+                  </>
+                )}
+              </Form.List>
+            </Form.Item>
+          </>
+        )}
+
+        {/* Foods */}
+        {selectedCategory === "foods" && (
+          <Form.Item label="Weights">
+            <Form.List name="weights">
+              {(fields, { add, remove }) => (
+                <>
+                  <Button
+                    type="dashed"
+                    onClick={() => add()}
+                    block
+                    icon={<PlusOutlined />}
                   >
-                    <Input placeholder="Option Name (e.g. Material)" />
-                  </Form.Item>
-                  <Form.Item
-                    {...restField}
-                    name={[name, "value"]}
-                    rules={[{ required: true, message: "Enter option value" }]}
-                  >
-                    <Input placeholder="Option Value (e.g. Cotton)" />
-                  </Form.Item>
-                  <MinusCircleOutlined onClick={() => remove(name)} />
-                </Space>
-              ))}
-              <Form.Item>
-                <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
-                  Add Option
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
+                    Add Weight Option
+                  </Button>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <Space
+                      key={key}
+                      style={{ display: "flex", marginTop: 16 }}
+                      align="baseline"
+                    >
+                      <Form.Item
+                        {...restField}
+                        name={[name, "size"]}
+                        rules={[{ required: true }]}
+                      >
+                        <Input placeholder="Weight (e.g. 500g, 1kg)" />
+                      </Form.Item>
+                      <Form.Item
+                        {...restField}
+                        name={[name, "price"]}
+                        rules={[{ required: true }]}
+                      >
+                        <InputNumber min={0} placeholder="Price" />
+                      </Form.Item>
+                      <DeleteOutlined
+                        onClick={() => remove(name)}
+                        style={{ color: "red", cursor: "pointer" }}
+                      />
+                    </Space>
+                  ))}
+                </>
+              )}
+            </Form.List>
+          </Form.Item>
+        )}
       </Form>
     </Create>
   );
