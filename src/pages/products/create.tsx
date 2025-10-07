@@ -16,6 +16,25 @@ import {
 } from "@ant-design/icons";
 import { useState } from "react";
 import { categories } from "../../utility/categories";
+import Electronics from "../../components/category_components/electronics";
+import Foods from "../../components/category_components/foods";
+import Clothes from "../../components/category_components/clothes";
+import Furniture from "../../components/category_components/furniture";   
+import Sports from "../../components/category_components/sports";
+import Toys from "../../components/category_components/toys";
+import Education from "../../components/category_components/education";
+import Others from "../../components/category_components/others";
+import Accessories from "../../components/category_components/accesoires";
+import Beauty from "../../components/category_components/beauty";
+import Health from "../../components/category_components/health";
+import Construction from "../../components/category_components/construction";
+import Transport from "../../components/category_components/transport";
+import Telecom from "../../components/category_components/telecom";
+import Travel from "../../components/category_components/travel";
+import Household from "../../components/category_components/household";
+import Stationery from "../../components/category_components/stationary";
+import BabyProducts from "../../components/category_components/baby";
+import Machinery from "../../components/category_components/machinery";
 
 
 export const ProductsCreate = () => {
@@ -84,256 +103,26 @@ export const ProductsCreate = () => {
             }))}
           />
         </Form.Item>
-
         <Divider />
-
-        {/* Electronics */}
-        {selectedCategory === "electronics" && (
-          <>
-            {/* Colors with images */}
-            <Form.Item label="Colors">
-              <Form.List name="colors">
-                {(fields, { add, remove }) => (
-                  <>
-                    <Button
-                      type="dashed"
-                      onClick={() => add()}
-                      block
-                      icon={<PlusOutlined />}
-                    >
-                      Add Color
-                    </Button>
-                    {fields.map(({ key, name, ...restField }) => (
-                      <Space
-                        key={key}
-                        style={{ display: "flex", marginTop: 16 }}
-                        align="baseline"
-                      >
-                        <Form.Item
-                          {...restField}
-                          name={[name, "name"]}
-                          rules={[{ required: true }]}
-                        >
-                          <Input placeholder="Color name" />
-                        </Form.Item>
-                        <Form.Item
-                          {...restField}
-                          name={[name, "image"]}
-                          valuePropName="fileList"
-                          getValueFromEvent={(e) => e.fileList}
-                        >
-                          <Upload listType="picture" maxCount={1}>
-                            <Button icon={<UploadOutlined />}>Upload</Button>
-                          </Upload>
-                        </Form.Item>
-                        <DeleteOutlined
-                          onClick={() => remove(name)}
-                          style={{ color: "red", cursor: "pointer" }}
-                        />
-                      </Space>
-                    ))}
-                  </>
-                )}
-              </Form.List>
-            </Form.Item>
-
-            {/* RAM */}
-            <Form.Item label="RAM Options" name="ram">
-              <Select mode="tags" placeholder="e.g. 4GB, 8GB, 16GB" />
-            </Form.Item>
-
-            {/* Memory with price */}
-            <Form.Item label="Memory Options">
-              <Form.List name="memory">
-                {(fields, { add, remove }) => (
-                  <>
-                    <Button
-                      type="dashed"
-                      onClick={() => add()}
-                      block
-                      icon={<PlusOutlined />}
-                    >
-                      Add Memory Option
-                    </Button>
-                    {fields.map(({ key, name, ...restField }) => (
-                      <Space
-                        key={key}
-                        style={{ display: "flex", marginTop: 16 }}
-                        align="baseline"
-                      >
-                        <Form.Item
-                          {...restField}
-                          name={[name, "size"]}
-                          rules={[{ required: true }]}
-                        >
-                          <Input placeholder="e.g. 128GB" />
-                        </Form.Item>
-                        <Form.Item
-                          {...restField}
-                          name={[name, "price"]}
-                          rules={[{ required: true }]}
-                        >
-                          <InputNumber min={0} placeholder="Price" />
-                        </Form.Item>
-                        <DeleteOutlined
-                          onClick={() => remove(name)}
-                          style={{ color: "red", cursor: "pointer" }}
-                        />
-                      </Space>
-                    ))}
-                  </>
-                )}
-              </Form.List>
-            </Form.Item>
-
-            {/* OS */}
-            <Form.Item label="Operating Systems" name="os">
-              <Select mode="tags" placeholder="e.g. Android, iOS, Windows" />
-            </Form.Item>
-          </>
-        )}
-
-        {/* Clothes */}
-        {selectedCategory === "clothes" && (
-          <>
-            {/* Colors with images */}
-            <Form.Item label="Colors">
-              <Form.List name="colors">
-                {(fields, { add, remove }) => (
-                  <>
-                    <Button
-                      type="dashed"
-                      onClick={() => add()}
-                      block
-                      icon={<PlusOutlined />}
-                    >
-                      Add Color
-                    </Button>
-                    {fields.map(({ key, name, ...restField }) => (
-                      <Space
-                        key={key}
-                        style={{ display: "flex", marginTop: 16 }}
-                        align="baseline"
-                      >
-                        <Form.Item
-                          {...restField}
-                          name={[name, "name"]}
-                          rules={[{ required: true }]}
-                        >
-                          <Input placeholder="Color name" />
-                        </Form.Item>
-                        <Form.Item
-                          {...restField}
-                          name={[name, "image"]}
-                          valuePropName="fileList"
-                          getValueFromEvent={(e) => e.fileList}
-                        >
-                          <Upload listType="picture" maxCount={1}>
-                            <Button icon={<UploadOutlined />}>Upload</Button>
-                          </Upload>
-                        </Form.Item>
-                        <DeleteOutlined
-                          onClick={() => remove(name)}
-                          style={{ color: "red", cursor: "pointer" }}
-                        />
-                      </Space>
-                    ))}
-                  </>
-                )}
-              </Form.List>
-            </Form.Item>
-
-            {/* Sizes with price */}
-            <Form.Item label="Sizes">
-              <Form.List name="sizes">
-                {(fields, { add, remove }) => (
-                  <>
-                    <Button
-                      type="dashed"
-                      onClick={() => add()}
-                      block
-                      icon={<PlusOutlined />}
-                    >
-                      Add Size
-                    </Button>
-                    {fields.map(({ key, name, ...restField }) => (
-                      <Space
-                        key={key}
-                        style={{ display: "flex", marginTop: 16 }}
-                        align="baseline"
-                      >
-                        <Form.Item
-                          {...restField}
-                          name={[name, "label"]}
-                          rules={[{ required: true }]}
-                        >
-                          <Input placeholder="Size (e.g. M, L, XL)" />
-                        </Form.Item>
-                        <Form.Item
-                          {...restField}
-                          name={[name, "price"]}
-                          rules={[{ required: true }]}
-                        >
-                          <InputNumber min={0} placeholder="Price" />
-                        </Form.Item>
-                        <DeleteOutlined
-                          onClick={() => remove(name)}
-                          style={{ color: "red", cursor: "pointer" }}
-                        />
-                      </Space>
-                    ))}
-                  </>
-                )}
-              </Form.List>
-            </Form.Item>
-          </>
-        )}
-
-        {/* Foods */}
-        {selectedCategory === "foods" && (
-          <Form.Item label="Weights">
-            <Form.List name="weights">
-              {(fields, { add, remove }) => (
-                <>
-                  <Button
-                    type="dashed"
-                    onClick={() => add()}
-                    block
-                    icon={<PlusOutlined />}
-                  >
-                    Add Weight Option
-                  </Button>
-                  {fields.map(({ key, name, ...restField }) => (
-                    <Space
-                      key={key}
-                      style={{ display: "flex", marginTop: 16 }}
-                      align="baseline"
-                    >
-                      <Form.Item
-                        {...restField}
-                        name={[name, "size"]}
-                        rules={[{ required: true }]}
-                      >
-                        <Input placeholder="Weight (e.g. 500g, 1kg)" />
-                      </Form.Item>
-                      <Form.Item
-                        {...restField}
-                        name={[name, "price"]}
-                        rules={[{ required: true }]}
-                      >
-                        <InputNumber min={0} placeholder="Price" />
-                      </Form.Item>
-                      <DeleteOutlined
-                        onClick={() => remove(name)}
-                        style={{ color: "red", cursor: "pointer" }}
-                      />
-                    </Space>
-                  ))}
-                </>
-              )}
-            </Form.List>
-          </Form.Item>
-        )}
+        <Electronics selectedCategory={selectedCategory} />
+        <Foods selectedCategory={selectedCategory} />
+        <Clothes selectedCategory={selectedCategory} />
+        <Accessories selectedCategory={selectedCategory} />
+        <Beauty selectedCategory={selectedCategory} />
+        <Health selectedCategory={selectedCategory} />  
+        <Furniture selectedCategory={selectedCategory} />
+        <Sports selectedCategory={selectedCategory} />
+        <Toys selectedCategory={selectedCategory} />  
+        <Education selectedCategory={selectedCategory} />
+        <Others selectedCategory={selectedCategory} />
+        <Construction selectedCategory={selectedCategory} />  
+        <Transport selectedCategory={selectedCategory} />
+        <Telecom selectedCategory={selectedCategory} />
+        <Travel selectedCategory={selectedCategory} />
+        <Household selectedCategory={selectedCategory} />
+        <Stationery selectedCategory={selectedCategory} />
+        <BabyProducts selectedCategory={selectedCategory} />
+        <Machinery selectedCategory={selectedCategory} />
       </Form>
     </Create>
   );

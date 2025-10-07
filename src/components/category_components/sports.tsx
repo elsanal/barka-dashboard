@@ -1,27 +1,33 @@
 import React from "react";
-import { Form, Input, Button, Space, Upload, InputNumber, Select } from "antd";
+import { Form, Input, Button, Space, Upload, InputNumber } from "antd";
 import { PlusOutlined, UploadOutlined, DeleteOutlined } from "@ant-design/icons";
 
 interface Props {
   selectedCategory: string;
 }
 
-const Beauty: React.FC<Props> = ({ selectedCategory }) => {
-  if (selectedCategory !== "beauty") return null;
+const Sports: React.FC<Props> = ({ selectedCategory }) => {
+  if (selectedCategory !== "sports") return null;
 
   return (
     <>
-      <Form.Item label="Product Shades or Variants">
+      <Form.Item label="Sports Item Variants (Size, Type, Color)">
         <Form.List name="variants">
           {(fields, { add, remove }) => (
             <>
               <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                Add Shade/Variant
+                Add Sport Variant
               </Button>
               {fields.map(({ key, name, ...rest }) => (
-                <Space key={key} style={{ display: "flex", marginTop: 16 }}>
-                  <Form.Item {...rest} name={[name, "shade"]}>
-                    <Input placeholder="Shade (e.g. Light, Medium, Dark)" />
+                <Space key={key} align="baseline" style={{ display: "flex", marginTop: 16 }}>
+                  <Form.Item {...rest} name={[name, "type"]}>
+                    <Input placeholder="Type (e.g. Football, Jersey)" />
+                  </Form.Item>
+                  <Form.Item {...rest} name={[name, "size"]}>
+                    <Input placeholder="Size (e.g. M, L, XL)" />
+                  </Form.Item>
+                  <Form.Item {...rest} name={[name, "color"]}>
+                    <Input placeholder="Color" />
                   </Form.Item>
                   <Form.Item
                     {...rest}
@@ -33,8 +39,8 @@ const Beauty: React.FC<Props> = ({ selectedCategory }) => {
                       <Button icon={<UploadOutlined />}>Upload</Button>
                     </Upload>
                   </Form.Item>
-                  <Form.Item {...rest} name={[name, "price"]} rules={[{ required: true }]}>
-                    <InputNumber placeholder="Price" min={0} />
+                  <Form.Item {...rest} name={[name, "price"]}>
+                    <InputNumber min={0} placeholder="Price" />
                   </Form.Item>
                   <DeleteOutlined onClick={() => remove(name)} style={{ color: "red" }} />
                 </Space>
@@ -47,4 +53,4 @@ const Beauty: React.FC<Props> = ({ selectedCategory }) => {
   );
 };
 
-export default Beauty;
+export default Sports;

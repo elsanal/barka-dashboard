@@ -6,18 +6,24 @@ interface Props {
   selectedCategory: string;
 }
 
-const Education: React.FC<Props> = ({ selectedCategory }) => {
-  if (selectedCategory !== "education") return null;
+const Toys: React.FC<Props> = ({ selectedCategory }) => {
+  if (selectedCategory !== "toys") return null;
 
   return (
     <>
-      <Form.Item label="Educational Product Variants (Type, Level, Material)">
+      <Form.Item label="Toys Variants (Age Range, Material, Type)">
         <Form.List name="variants">
           {(fields, { add, remove }) => (
             <>
-              <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                Add Educational Item
+              <Button
+                type="dashed"
+                onClick={() => add()}
+                block
+                icon={<PlusOutlined />}
+              >
+                Add Toy Variant
               </Button>
+
               {fields.map(({ key, name, ...rest }) => (
                 <Space
                   key={key}
@@ -25,23 +31,23 @@ const Education: React.FC<Props> = ({ selectedCategory }) => {
                   style={{ display: "flex", marginTop: 16 }}
                 >
                   <Form.Item {...rest} name={[name, "type"]}>
-                    <Input placeholder="Type (e.g. Tablet, Book, Whiteboard)" />
+                    <Input placeholder="Type (e.g. Car, Doll, Puzzle)" />
                   </Form.Item>
 
-                  <Form.Item {...rest} name={[name, "level"]}>
+                  <Form.Item {...rest} name={[name, "ageRange"]}>
                     <Select
-                      placeholder="Level"
+                      placeholder="Age Range"
                       options={[
-                        { label: "Primary", value: "primary" },
-                        { label: "Secondary", value: "secondary" },
-                        { label: "University", value: "university" },
-                        { label: "Professional", value: "professional" },
+                        { label: "0-3 years", value: "0-3" },
+                        { label: "4-7 years", value: "4-7" },
+                        { label: "8-12 years", value: "8-12" },
+                        { label: "13+ years", value: "13+" },
                       ]}
                     />
                   </Form.Item>
 
                   <Form.Item {...rest} name={[name, "material"]}>
-                    <Input placeholder="Material (e.g. Plastic, Paper, Metal)" />
+                    <Input placeholder="Material (e.g. Plastic, Wood, Fabric)" />
                   </Form.Item>
 
                   <Form.Item
@@ -61,7 +67,7 @@ const Education: React.FC<Props> = ({ selectedCategory }) => {
 
                   <DeleteOutlined
                     onClick={() => remove(name)}
-                    style={{ color: "red" }}
+                    style={{ color: "red", cursor: "pointer" }}
                   />
                 </Space>
               ))}
@@ -73,4 +79,4 @@ const Education: React.FC<Props> = ({ selectedCategory }) => {
   );
 };
 
-export default Education;
+export default Toys;
