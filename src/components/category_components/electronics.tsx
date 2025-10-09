@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, Space, Upload, Select, InputNumber } from "antd";
+import { Form, Button, Space, Upload, Select, InputNumber } from "antd";
 import { PlusOutlined, UploadOutlined, DeleteOutlined } from "@ant-design/icons";
 
 interface ElectronicsProps {
@@ -10,6 +10,33 @@ const Electronics: React.FC<ElectronicsProps> = ({ selectedCategory }) => {
   if (selectedCategory !== "electronics") {
     return null;
   }
+
+  // Predefined options for memory, RAM, OS, and colors
+  const memoryOptions = ["32GB", "64GB", "128GB", "256GB", "512GB", "1TB"];
+  const ramOptions = ["4GB", "8GB", "16GB", "32GB"];
+  const osOptions = ["Android", "iOS", "Windows", "Linux", "macOS"];
+  const colorOptions = [
+    "Red",
+    "Blue",
+    "Green",
+    "Black",
+    "White",
+    "Yellow",
+    "Purple",
+    "Gray",
+    "Pink",
+    "Orange",
+    "Brown",
+    "Cyan",
+    "Magenta",
+    "Lime",
+    "Maroon",
+    "Navy",
+    "Olive",
+    "Teal",
+    "Silver",
+    "Gold",
+  ];
 
   return (
     <>
@@ -35,9 +62,15 @@ const Electronics: React.FC<ElectronicsProps> = ({ selectedCategory }) => {
                   <Form.Item
                     {...restField}
                     name={[name, "name"]}
-                    rules={[{ required: true }]}
+                    rules={[{ required: true, message: "Please select a color" }]}
                   >
-                    <Input placeholder="Color name" />
+                    <Select
+                      placeholder="Select a color"
+                      options={colorOptions.map((color) => ({
+                        label: color,
+                        value: color,
+                      }))}
+                    />
                   </Form.Item>
                   <Form.Item
                     {...restField}
@@ -62,7 +95,11 @@ const Electronics: React.FC<ElectronicsProps> = ({ selectedCategory }) => {
 
       {/* RAM */}
       <Form.Item label="RAM Options" name="ram">
-        <Select mode="tags" placeholder="e.g. 4GB, 8GB, 16GB" />
+        <Select
+          mode="multiple"
+          placeholder="Select RAM options"
+          options={ramOptions.map((ram) => ({ label: ram, value: ram }))}
+        />
       </Form.Item>
 
       {/* Memory with price */}
@@ -89,7 +126,13 @@ const Electronics: React.FC<ElectronicsProps> = ({ selectedCategory }) => {
                     name={[name, "size"]}
                     rules={[{ required: true }]}
                   >
-                    <Input placeholder="e.g. 128GB" />
+                    <Select
+                      placeholder="Select memory size"
+                      options={memoryOptions.map((memory) => ({
+                        label: memory,
+                        value: memory,
+                      }))}
+                    />
                   </Form.Item>
                   <Form.Item
                     {...restField}
@@ -111,7 +154,11 @@ const Electronics: React.FC<ElectronicsProps> = ({ selectedCategory }) => {
 
       {/* OS */}
       <Form.Item label="Operating Systems" name="os">
-        <Select mode="tags" placeholder="e.g. Android, iOS, Windows" />
+        <Select
+          mode="multiple"
+          placeholder="Select operating systems"
+          options={osOptions.map((os) => ({ label: os, value: os }))}
+        />
       </Form.Item>
     </>
   );

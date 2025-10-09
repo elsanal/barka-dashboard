@@ -54,9 +54,25 @@ export const ProductsCreate = () => {
         </Form.Item>
 
         <Form.Item
+          label="Product Dedscription"
+          name="description"
+          rules={[{ required: false }]}
+        >
+          <Input placeholder="e.g. un telephone de haut gamme" />
+        </Form.Item>
+
+        <Form.Item
           label="Basic Price"
-          name="price"
+          name="base_price"
           rules={[{ required: true }]}
+        >
+          <InputNumber min={0} style={{ width: "100%" }} />
+        </Form.Item>
+
+        <Form.Item
+          label="Promo Price"
+          name="promo_price"
+          rules={[{ required: false }]}
         >
           <InputNumber min={0} style={{ width: "100%" }} />
         </Form.Item>
@@ -72,6 +88,20 @@ export const ProductsCreate = () => {
             <UploadOutlined /> Click or drag to upload product images
           </Upload.Dragger>
         </Form.Item>
+
+        <Form.Item
+          label="Tags"
+          name="tags"
+          rules={[{ required: false }]}
+        >
+          <Select
+            mode="tags"
+            style={{ width: "100%" }}
+            placeholder="Add tags"
+            tokenSeparators={[","]}
+          />
+        </Form.Item>
+
 
         {/* Category & Type */}
         <Form.Item
