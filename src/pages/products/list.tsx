@@ -1,5 +1,5 @@
 // src/pages/products/list.tsx
-import { List, EditButton, ShowButton } from "@refinedev/antd";
+import { List, EditButton, ShowButton, DeleteButton } from "@refinedev/antd";
 import { Table, Space } from "antd";
 import { useList } from "@refinedev/core";
 
@@ -22,6 +22,7 @@ export const ProductsList = () => {
             <Space>
               <EditButton recordItemId={record.id} />
               <ShowButton recordItemId={record.id} />
+              <DeleteButton recordItemId={record.id} />
             </Space>
           )}
         />

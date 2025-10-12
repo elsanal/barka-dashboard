@@ -10,88 +10,157 @@ import {
   Button,
   Space,
   Divider,
+  Upload,
+  Select,
 } from "antd";
-import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
+import { PlusOutlined, MinusCircleOutlined, UploadOutlined } from "@ant-design/icons";
+import Electronics from "../../components/category_components/electronics";
+import Foods from "../../components/category_components/foods";
+import Clothes from "../../components/category_components/clothes";
+import Furniture from "../../components/category_components/furniture";   
+import Sports from "../../components/category_components/sports";
+import Toys from "../../components/category_components/toys";
+import Education from "../../components/category_components/education";
+import Others from "../../components/category_components/others";
+import Accessories from "../../components/category_components/accesoires";
+import Beauty from "../../components/category_components/beauty";
+import Health from "../../components/category_components/health";
+import Construction from "../../components/category_components/construction";
+import Transport from "../../components/category_components/transport";
+import Telecom from "../../components/category_components/telecom";
+import Travel from "../../components/category_components/travel";
+import Household from "../../components/category_components/household";
+import Stationery from "../../components/category_components/stationary";
+import BabyProducts from "../../components/category_components/baby";
+import Machinery from "../../components/category_components/machinery";
+import { useEffect, useState } from "react";
+import { categories } from "../../utility/categories";
 
 export const ProductsEdit = () => {
   const { formProps, saveButtonProps } = useForm();
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+
+  useEffect(() => {
+    const categoryValue = formProps.form?.getFieldValue("category");
+    if (categoryValue) {
+      setSelectedCategory(categoryValue);
+    }
+  }, [formProps.form]); // Runs once when form is initialized
+
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
-        {/* Product Info */}
+        {/* Required Fields */}
         <Form.Item
           label="Product Name"
           name="name"
           rules={[{ required: true }]}
         >
-          <Input />
+          <Input placeholder="e.g. iPhone 16 Pro" />
         </Form.Item>
 
-        <Form.Item label="Price" name="price" rules={[{ required: true }]}>
+        <Form.Item
+          label="Product Dedscription"
+          name="description"
+          rules={[{ required: false }]}
+        >
+          <Input placeholder="e.g. un telephone de haut gamme" />
+        </Form.Item>
+
+        <Form.Item
+          label="Basic Price"
+          name="base_price"
+          rules={[{ required: true }]}
+        >
           <InputNumber min={0} style={{ width: "100%" }} />
         </Form.Item>
 
-        <Form.Item label="Stock" name="stock" initialValue={0}>
+        <Form.Item
+          label="Promo Price"
+          name="promo_price"
+          rules={[{ required: false }]}
+        >
           <InputNumber min={0} style={{ width: "100%" }} />
         </Form.Item>
 
+        {/* General Images */}
+        <Form.Item
+          label="General Images"
+          name="images"
+          valuePropName="fileList"
+          getValueFromEvent={(e) => e.fileList}
+        >
+          <Upload.Dragger name="file" listType="picture" multiple>
+            <UploadOutlined /> Click or drag to upload product images
+          </Upload.Dragger>
+        </Form.Item>
+
+        <Form.Item
+          label="Tags"
+          name="tags"
+          rules={[{ required: false }]}
+        >
+          <Select
+            mode="tags"
+            style={{ width: "100%" }}
+            placeholder="Add tags"
+            tokenSeparators={[","]}
+          />
+        </Form.Item>
+
+
+        {/* Category & Type */}
+        <Form.Item
+          label="Category"
+          name="category"
+          
+          rules={[{ required: true }]}
+        >
+          <Select
+            placeholder="Select category"
+            options={Object.keys(categories).map((c) => ({
+              label: c,
+              value: c,
+            }))}
+            onChange={(value) => setSelectedCategory(value)}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Type"
+          name="type"
+          rules={[{ required: true }]}
+        >
+          <Select
+            placeholder="Select type"
+            disabled={!selectedCategory}
+            options={categories[selectedCategory]?.map((t) => ({
+              label: t,
+              value: t,
+            }))}
+          />
+        </Form.Item>
         <Divider />
-
-        {/* Variants */}
-        <h3>Variants</h3>
-        <Form.List name="variants">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map(({ key, name, ...restField }) => (
-                <Space key={key} align="baseline" style={{ display: "flex", marginBottom: 8 }}>
-                  <Form.Item {...restField} name={[name, "color"]}>
-                    <Input placeholder="Color" />
-                  </Form.Item>
-                  <Form.Item {...restField} name={[name, "size"]}>
-                    <Input placeholder="Size" />
-                  </Form.Item>
-                  <Form.Item {...restField} name={[name, "stock"]}>
-                    <InputNumber min={0} placeholder="Stock" />
-                  </Form.Item>
-                  <MinusCircleOutlined onClick={() => remove(name)} />
-                </Space>
-              ))}
-              <Form.Item>
-                <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
-                  Add Variant
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
-
-        <Divider />
-
-        {/* Options */}
-        <h3>Options</h3>
-        <Form.List name="options">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map(({ key, name, ...restField }) => (
-                <Space key={key} align="baseline" style={{ display: "flex", marginBottom: 8 }}>
-                  <Form.Item {...restField} name={[name, "name"]}>
-                    <Input placeholder="Option Name" />
-                  </Form.Item>
-                  <Form.Item {...restField} name={[name, "value"]}>
-                    <Input placeholder="Option Value" />
-                  </Form.Item>
-                  <MinusCircleOutlined onClick={() => remove(name)} />
-                </Space>
-              ))}
-              <Form.Item>
-                <Button type="dashed" onClick={() => add()} icon={<PlusOutlined />}>
-                  Add Option
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
+        <Electronics selectedCategory={selectedCategory} />
+        <Foods selectedCategory={selectedCategory} />
+        <Clothes selectedCategory={selectedCategory} />
+        <Accessories selectedCategory={selectedCategory} />
+        <Beauty selectedCategory={selectedCategory} />
+        <Health selectedCategory={selectedCategory} />  
+        <Furniture selectedCategory={selectedCategory} />
+        <Sports selectedCategory={selectedCategory} />
+        <Toys selectedCategory={selectedCategory} />  
+        <Education selectedCategory={selectedCategory} />
+        <Others selectedCategory={selectedCategory} />
+        <Construction selectedCategory={selectedCategory} />  
+        <Transport selectedCategory={selectedCategory} />
+        <Telecom selectedCategory={selectedCategory} />
+        <Travel selectedCategory={selectedCategory} />
+        <Household selectedCategory={selectedCategory} />
+        <Stationery selectedCategory={selectedCategory} />
+        <BabyProducts selectedCategory={selectedCategory} />
+        <Machinery selectedCategory={selectedCategory} />
       </Form>
     </Edit>
   );
